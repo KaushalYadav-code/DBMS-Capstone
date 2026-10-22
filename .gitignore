@@ -1,0 +1,25 @@
+# Node.js dependencies
+node_modules/
+server/node_modules/
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+server/.env
+server/.env.example
+
+# Logs
+*.log
+npm-debug.log*
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Local database files
+data/
+mongodb-data/
+
+# Original frontend backup
+index.html.pre-refactor

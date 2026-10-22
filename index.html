@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f8fc">
+  <title>DepGraph — Dependency Intelligence</title>
+  <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body>
+  <svg class="icon-sprite" aria-hidden="true" width="0" height="0">
+    <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7.5A2.5 2.5 0 0 1 5.5 5H10l2 2h6.5A2.5 2.5 0 0 1 21 9.5v8a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 17.5z"/><path d="M3.5 10h17"/></symbol>
+    <symbol id="i-box" viewBox="0 0 24 24"><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9z"/><path d="m4.5 7.7 7.5 4.2 7.5-4.2M12 12v8.5"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 20 6v5.5c0 5-3.4 8-8 9.5-4.6-1.5-8-4.5-8-9.5V6z"/><path d="m9 12 2 2 4-4"/></symbol>
+    <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 19.5h16"/><path d="M7 16V11M12 16V5M17 16V8" stroke-linecap="round"/></symbol>
+    <symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="m19.4 15 .1.1 1.2.9-1.2 2.1-1.4-.6a8 8 0 0 1-1.8 1l-.2 1.5h-2.5l-.2-1.5a8 8 0 0 1-1.9-1l-1.4.6-1.2-2.1 1.2-.9a7 7 0 0 1 0-2.1l-1.2-.9 1.2-2.1 1.4.6a8 8 0 0 1 1.9-1l.2-1.5h2.5l.2 1.5a8 8 0 0 1 1.8 1l1.4-.6 1.2 2.1-1.2.9a7 7 0 0 1 0 2.1Z" transform="translate(-1 -1)"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 4.5 4.5" stroke-linecap="round"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 20h16" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><path d="M10.3 4.5 2.8 18a2 2 0 0 0 1.7 3h15a2 2 0 0 0 1.7-3L13.7 4.5a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4m0 3h.01" stroke-linecap="round"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18" stroke-linecap="round"/></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h8"/></symbol>
+    <symbol id="i-nodes" viewBox="0 0 24 24"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="12" cy="18" r="2.5"/><path d="m8.2 7.2 2.6 8m5-8-2.6 8M8.5 6h7"/></symbol>
+    <symbol id="i-code" viewBox="0 0 24 24"><path d="m8 7-5 5 5 5m8-10 5 5-5 5m-2-13-4 16" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  </svg>
+  <div class="app">
+    <aside class="sidebar" aria-label="Main navigation">
+      <div class="brand">
+        <div class="brand-mark"><svg fill="none" stroke="currentColor" stroke-width="1.8"><use href="#i-nodes"/></svg></div>
+        <div class="brand-copy"><div class="brand-name">DepGraph</div><div class="brand-caption">Dependency intelligence</div></div>
+      </div>
+      <div class="nav-label">Workspace</div>
+      <nav class="nav-group">
+        <button class="nav-item active" data-view="overview"><svg fill="none" stroke="currentColor" stroke-width="1.7"><use href="#i-grid"/></svg><span>Overview</span></button>
+        <button class="nav-item" data-view="projects"><svg fill="none" stroke="currentColor" stroke-width="1.7"><use href="#i-folder"/></svg><span>Projects</span><span class="nav-count" id="navProjectCount">0</span></button>
+        <button class="nav-item" data-view="dependencies"><svg fill="none" stroke="currentColor" stroke-width="1.7"><use href="#i-box"/></svg><span>Dependencies</span><span class="nav-count" id="navPackageCount">0</span></button>
+        <button class="nav-item" data-view="vulnerabilities"><svg fill="none" stroke="currentColor" stroke-width="1.7"><use href="#i-shield"/></svg><span>Vulnerabilities</span><span class="nav-count" id="navVulnCount">0</span></button>
+        <button class="nav-item" data-view="reports"><svg fill="none" stroke="currentColor" stroke-width="1.7"><use href="#i-chart"/></svg><span>Reports</span></button>
+      </nav>
+      <div class="sidebar-spacer"></div>
+      <div class="workspace-card"><div class="workspace-top"><div class="workspace-avatar">DG</div><div><div class="workspace-title">Engineering</div><div class="workspace-sub">Personal workspace</div></div></div><div class="workspace-plan"><span>Prototype workspace</span><strong>Free</strong></div></div>
+      <nav class="nav-group"><button class="nav-item" id="settingsButton"><svg fill="none" stroke="currentColor" stroke-width="1.7"><use href="#i-settings"/></svg><span>Settings</span></button></nav>
+      <div class="user-row"><div class="user-avatar">CS</div><div class="user-copy"><div class="user-name">Capstone Student</div><div class="user-role">Project owner</div></div><div class="user-menu">···</div></div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar"><div class="breadcrumbs">Workspace&nbsp; / &nbsp;<strong id="breadcrumbCurrent">Overview</strong></div><div class="top-actions"><span class="connection-badge" id="connectionBadge">Demo mode</span><span class="today-label" id="todayLabel"></span><div class="top-divider"></div><button class="icon-btn" id="notificationButton" aria-label="Notifications"><svg fill="none" stroke="currentColor" stroke-width="1.7"><use href="#i-bell"/></svg><i class="notice-dot"></i></button><div class="user-avatar">CS</div></div></header>
+
+      <section class="view active" id="view-overview" aria-labelledby="pageTitle">
+        <div class="page-heading"><div><p class="eyebrow">Workspace overview</p><h1 id="pageTitle">Dependency health at a glance</h1><p class="page-description">A clear view of the packages and recorded risks across your projects.</p></div><div class="heading-actions"><button class="btn" data-action="export-packages"><svg fill="none" stroke="currentColor" stroke-width="1.8"><use href="#i-download"/></svg>Export report</button><button class="btn btn-primary" data-open="project"><svg fill="none" stroke="currentColor" stroke-width="1.8"><use href="#i-plus"/></svg>New project</button></div></div>
+        <div class="sample-banner" id="overviewDataBanner"><svg fill="none" stroke="currentColor" stroke-width="1.7"><use href="#i-alert"/></svg><span>Connecting to DepGraph API…</span></div>
+        <div class="summary-grid" id="summaryGrid"></div>
+        <div class="dashboard-grid">
+          <section class="card chart-card"><div class="card-head"><div><h2 class="card-title">License distribution</h2><div class="card-note">Package records grouped by stored license</div></div></div><div class="license-distribution" id="licenseDistribution"></div></section>
+          <section class="card health-card"><div class="card-head"><div><h2 class="card-title">Portfolio health</h2><div class="card-note">Based on manually recorded dependency status</div></div><button class="text-link" data-view-link="reports">Details <span aria-hidden="true">→</span></button></div><div class="health-content"><div class="score-ring"><div class="score-inner"><div class="score-number" id="portfolioScore">—</div><div class="score-caption">out of 100</div></div></div><div class="health-copy"><div class="health-status" id="portfolioStatus">Loading inventory</div><div class="health-description" id="portfolioDescription">Status labels are entered by the project maintainer.</div></div></div><div class="health-breakdown"><div class="health-row"><span>Current dependencies</span><strong id="currentShare">—</strong><div class="health-track"><div class="health-fill" id="currentBar"></div></div></div><div class="health-row"><span>Packages with a license</span><strong id="licenseShare">—</strong><div class="health-track"><div class="health-fill" id="licenseBar"></div></div></div></div></section>
+        </div>
+        <div class="lower-grid">
+          <section class="card projects-card"><div class="card-head"><div><h2 class="card-title">Projects</h2><div class="card-note">Your monitored software projects</div></div><button class="text-link" data-view-link="projects">View all <span aria-hidden="true">→</span></button></div><div class="table-wrap"><table><thead><tr><th>Project</th><th>Dependencies</th><th>Health</th><th>Updated</th></tr></thead><tbody id="overviewProjects"></tbody></table></div></section>
+          <section class="card findings-card"><div class="card-head"><div><h2 class="card-title">Recorded findings</h2><div class="card-note">Advisory and risk notes stored for packages</div></div><button class="text-link" data-view-link="vulnerabilities">View all <span aria-hidden="true">→</span></button></div><div id="overviewFindings"></div></section>
+        </div>
+      </section>
+
+      <section class="view" id="view-projects">
+        <div class="page-heading"><div><p class="eyebrow">Workspace</p><h1>Projects</h1><p class="page-description">Manage project inventories and compare their current package health.</p></div><div class="heading-actions"><button class="btn btn-primary" data-open="project"><svg fill="none" stroke="currentColor" stroke-width="1.8"><use href="#i-plus"/></svg>New project</button></div></div>
+        <div class="sample-banner" id="projectsDataBanner"><svg fill="none" stroke="currentColor" stroke-width="1.7"><use href="#i-alert"/></svg><span>Project records load from MongoDB.</span></div>
+        <section class="card"><div class="card-head"><div><h2 class="card-title">All projects</h2><div class="card-note">Project-level dependency inventories</div></div></div><div class="project-grid" id="projectGrid"></div></section>
+      </section>
+
+      <section class="view" id="view-dependencies">
+        <div class="page-heading"><div><p class="eyebrow">Inventory</p><h1>Dependencies</h1><p class="page-description">Search package records, check versions, and review license metadata.</p></div><div class="heading-actions"><button class="btn" data-action="export-packages"><svg fill="none" stroke="currentColor" stroke-width="1.8"><use href="#i-download"/></svg>Export CSV</button><button class="btn btn-primary" data-open="package"><svg fill="none" stroke="currentColor" stroke-width="1.8"><use href="#i-plus"/></svg>Add package</button></div></div>
+        <div class="sample-banner" id="dependenciesDataBanner"><svg fill="none" stroke="currentColor" stroke-width="1.7"><use href="#i-alert"/></svg><span>Version comparisons use only versions recorded in this dataset. They are not registry lookups.</span></div>
+        <section class="card"><div class="toolbar"><label class="search-field"><svg fill="none" stroke="currentColor" stroke-width="1.8"><use href="#i-search"/></svg><input type="search" id="packageSearch" placeholder="Search packages, projects, or licenses" aria-label="Search dependencies"></label><select id="ecosystemFilter" aria-label="Filter ecosystem"><option value="all">All ecosystems</option><option value="npm">npm</option><option value="PyPI">PyPI</option></select><select id="statusFilter" aria-label="Filter status"><option value="all">All statuses</option><option value="behind-comparison">Behind comparison</option><option value="review">Needs maintainer review</option><option value="unknown">No comparison data</option></select><span class="result-count" id="packageResultCount"></span></div><div class="table-wrap"><table class="inventory-table"><thead><tr><th>Package</th><th>Installed / comparison</th><th>Ecosystem</th><th>License</th><th>Project</th><th>Version intelligence</th><th>Actions</th></tr></thead><tbody id="packageRows"></tbody></table></div></section>
+        <section class="card graph-card"><div class="card-head"><div><h2 class="card-title">Dependency graph</h2><div class="card-note">Directed links from the selected project and between its packages</div></div></div><div class="graph-controls"><label>Project<select id="graphProject" aria-label="Graph project"></select></label><label>Selected package<select id="graphPackage" aria-label="Selected package"><option value="">Select a package</option></select></label></div><div class="graph-wrap"><svg class="dependency-graph" id="dependencyGraph" role="img" aria-label="Project dependency graph"></svg></div><div class="graph-details" id="graphDetails"><div class="empty-state">Choose a project to load its dependency graph.</div></div></section>
+          <section class="card relationship-card"><div class="card-head"><div><h2 class="card-title">Dependency relationships</h2><div class="card-note">Direct project dependencies and package-to-package links</div></div><button class="btn btn-primary" data-open="dependency"><svg fill="none" stroke="currentColor" stroke-width="1.8"><use href="#i-plus"/></svg>Add relationship</button></div><div class="table-wrap"><table class="inventory-table relationship-table"><thead><tr><th>Project</th><th>Source</th><th>Depends on</th><th>Type</th><th>Constraint</th><th>Comparison</th><th>Stored label</th><th>Actions</th></tr></thead><tbody id="dependencyRows"></tbody></table></div></section>
+      </section>
+
+      <section class="view" id="view-vulnerabilities">
+        <div class="page-heading"><div><p class="eyebrow">Risk register</p><h1>Vulnerabilities</h1><p class="page-description">Review recorded advisory notes and the suggested next action for each package.</p></div><div class="heading-actions"><button class="btn" data-action="export-vulnerabilities"><svg fill="none" stroke="currentColor" stroke-width="1.8"><use href="#i-download"/></svg>Export CSV</button><button class="btn btn-primary" data-open="vulnerability"><svg fill="none" stroke="currentColor" stroke-width="1.8"><use href="#i-plus"/></svg>Add note</button></div></div>
+        <div class="sample-banner" id="vulnerabilitiesDataBanner"><svg fill="none" stroke="currentColor" stroke-width="1.7"><use href="#i-alert"/></svg><span>Notes are matched against stored package identities and affected-version rules. DepGraph does not run live security scans or verify advisories.</span></div>
+        <section class="card"><div class="card-head"><div><h2 class="card-title">Recorded vulnerability notes</h2><div class="card-note">Matches use ecosystem, package identity, and a supported affected-version range where supplied</div></div></div><div class="vuln-list" id="vulnerabilityList"></div></section>
+      </section>
+
+      <section class="view" id="view-reports">
+        <div class="page-heading"><div><p class="eyebrow">Insights</p><h1>Reports</h1><p class="page-description">Export a snapshot of the records stored in your MongoDB database.</p></div></div>
+        <div class="sample-banner" id="reportsDataBanner"><svg fill="none" stroke="currentColor" stroke-width="1.7"><use href="#i-alert"/></svg><span>Reports contain only records loaded from MongoDB.</span></div>
+        <section class="card"><div class="card-head"><div><h2 class="card-title">Available exports</h2><div class="card-note">CSV files can be opened in spreadsheet software</div></div></div><div class="report-grid"><article class="report-card"><div class="metric-icon blue"><svg fill="none" stroke="currentColor" stroke-width="1.7"><use href="#i-box"/></svg></div><h3>Dependency inventory</h3><p>Package versions, ecosystems, licenses, project membership, comparison versions, and stored status.</p><button class="btn" data-action="export-packages"><svg fill="none" stroke="currentColor" stroke-width="1.7"><use href="#i-download"/></svg>Download CSV</button></article><article class="report-card"><div class="metric-icon red"><svg fill="none" stroke="currentColor" stroke-width="1.7"><use href="#i-shield"/></svg></div><h3>Vulnerability register</h3><p>Recorded notes, match state, evidence label, affected-version information, and recommendations.</p><button class="btn" data-action="export-vulnerabilities"><svg fill="none" stroke="currentColor" stroke-width="1.7"><use href="#i-download"/></svg>Download CSV</button></article><article class="report-card"><div class="metric-icon green"><svg fill="none" stroke="currentColor" stroke-width="1.7"><use href="#i-folder"/></svg></div><h3>Project summary</h3><p>Dependency counts, review labels, comparison gaps, affected notes, and health score.</p><button class="btn" data-action="export-projects"><svg fill="none" stroke="currentColor" stroke-width="1.7"><use href="#i-download"/></svg>Download CSV</button></article></div></section>
+        <section class="card health-analytics"><div class="card-head"><div><h2 class="card-title">Project health analytics</h2><div class="card-note">Counts are calculated from stored project links, package versions, and vulnerability notes</div></div></div><p class="health-formula" id="healthFormula">Health formula loads from MongoDB analytics.</p><div class="table-wrap"><table class="inventory-table"><thead><tr><th>Project</th><th>Dependency links</th><th>Needs review</th><th>Behind comparison</th><th>Affected links</th><th>Health</th></tr></thead><tbody id="healthRows"></tbody></table></div></section>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="recordDialog" aria-labelledby="dialogTitle"><div class="dialog-head"><h2 id="dialogTitle">Add record</h2><button class="dialog-close" type="button" aria-label="Close dialog"><svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8"><use href="#i-close"/></svg></button></div><form class="dialog-body" id="recordForm"><div id="formFields" class="form-grid"></div><div class="dialog-actions"><button class="btn" type="button" id="cancelDialog">Cancel</button><button class="btn btn-primary" type="submit" id="saveRecord">Save record</button></div></form></dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script type="module" src="./js/app.js"></script>
+</body>
+</html>
